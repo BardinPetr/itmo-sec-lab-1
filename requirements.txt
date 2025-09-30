@@ -1,0 +1,9 @@
+Flask
+SQLAlchemy
+Werkzeug
+argon2-cffi
+python-dotenv
+cryptography
+PyJWT
+Flask-SQLAlchemy
+requests

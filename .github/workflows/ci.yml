@@ -1,0 +1,43 @@
+name: Security Scans
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  sast-bandit:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - name: Perform Bandit Analysis
+        uses: PyCQA/bandit-action@v1
+
+  sast-safety:
+    uses: pyupio/safety-action@v1
+    with:
+      api-key: ${{ secrets.SAFETY_API_KEY }}
+
+
+  security-scans:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run Bandit SCA
+      uses: PyCQA/bandit-action@v1
+
+    - name: Run Safety SCA
+      uses: pyupio/safety-action@v1
+      with:
+        api-key: ${{ secrets.SAFETY_TOKEN }}
