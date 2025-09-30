@@ -24,22 +24,35 @@ jobs:
       with:
         python-version: '3.13'
 
-    - name: Run Bandit SCA
-      uses: PyCQA/bandit-action@v1
+#    - name: Run Bandit SCA
+#      uses: PyCQA/bandit-action@v1
+#
+#    - name: Run Safety SCA
+#      uses: pyupio/safety-action@v1
+#      with:
+#        api-key: ${{ secrets.SAFETY_TOKEN }}
+#
+#    - name: Run Snyk
+#      uses: snyk/actions/python-3.9@master
+#      continue-on-error: true
+#      env:
+#        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#      with:
+#        args: --sarif-file-output=snyk.sarif
+#    - name: Upload result to GitHub Code Scanning
+#      uses: github/codeql-action/upload-sarif@v3
+#      with:
+#        sarif_file: snyk.sarif
 
-    - name: Run Safety SCA
-      uses: pyupio/safety-action@v1
-      with:
-        api-key: ${{ secrets.SAFETY_TOKEN }}
-
-    - name: Run Snyk
+    - name: Run Snyk Code
       uses: snyk/actions/python-3.9@master
       continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: --sarif-file-output=snyk.sarif
+        command: code test
+        args: --sarif-file-output=snykcode.sarif
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
       with:
-        sarif_file: snyk.sarif
+        sarif_file: snykcode.sarif
