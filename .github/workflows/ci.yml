@@ -11,9 +11,13 @@ jobs:
       security-events: write
       actions: read
       contents: read
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -27,6 +31,3 @@ jobs:
       uses: pyupio/safety-action@v1
       with:
         api-key: ${{ secrets.SAFETY_TOKEN }}
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
